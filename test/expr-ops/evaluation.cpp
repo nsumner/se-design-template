@@ -100,30 +100,47 @@ TEST_CASE("division") {
 
 
 TEST_CASE("missing symbol") {
-  Environment env;
+  Environment envMissing;
+  Environment envFound;
+  envFound.set("x", 42);
+
   ExprTree tree;
   auto three = tree.addLiteral(3);
   auto x = tree.addSymbol("x");
   auto subtract = tree.addOperation(OpCode::SUBTRACT, three, x);
   tree.setRoot(subtract);
 
-  auto result = evaluate(tree, env);
+  auto resultMissing = evaluate(tree, envMissing);
+  auto resultFound = evaluate(tree, envFound);
 
-  CHECK(!result);
+  // Note, we require both that evaluation when a symbol is not
+  // missing to yield a value *and* evaluation when a symbol is
+  // missing to not yield a value.
+  CHECK(!resultMissing);
+  CHECK(resultFound.has_value());
 }
 
 
 TEST_CASE("divide by 0") {
   Environment env;
   ExprTree tree;
+  auto five = tree.addLiteral(5);
   auto three = tree.addLiteral(3);
   auto zero = tree.addLiteral(0);
-  auto divide = tree.addOperation(OpCode::DIVIDE, three, zero);
-  tree.setRoot(divide);
+  auto divideBy0 = tree.addOperation(OpCode::DIVIDE, three, zero);
+  auto divideBy5 = tree.addOperation(OpCode::DIVIDE, three, five);
 
-  auto result = evaluate(tree, env);
+  tree.setRoot(divideBy0);
+  auto div0Result = evaluate(tree, env);
 
-  CHECK(!result);
+  tree.setRoot(divideBy5);
+  auto div5Result = evaluate(tree, env);
+
+  // Note, we require both that evaluation when a denominator is nonzero
+  // to yield a value *and* evaluation when a denominator is nonzero
+  // to not yield a value.
+  CHECK(!div0Result);
+  CHECK(div5Result.has_value());
 }
 
 
