@@ -11,7 +11,7 @@ Building with CMake
 
         cd build
 
-3. Run CMake with the path to the LLVM source.
+3. Run CMake with the path to the source.
 
         cmake ../se-design-template
 
