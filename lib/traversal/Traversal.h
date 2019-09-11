@@ -17,9 +17,9 @@ namespace traversal {
 
 // You should feel free to add template arguments if you want to, but the
 // invocations in the test suite should remain valid.
-template<class GraphKind>
+template<class GraphKind, class OnNode, class OnEdge>
 void
-traverse(GraphKind& graph, auto onNode, auto onEdge) {
+traverse(GraphKind& graph, OnNode onNode, OnEdge onEdge) {
 }
 
 
