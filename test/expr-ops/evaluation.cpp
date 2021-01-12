@@ -4,7 +4,9 @@
 #include "ExprTree.h"
 #include "ExprOps.h"
 
-using namespace exprtree;
+using exprtree::ExprTree;
+using exprtree::Environment;
+using exprtree::OpCode;
 
 
 TEST_CASE("empty") {

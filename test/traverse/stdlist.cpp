@@ -6,7 +6,7 @@
 
 #include "Traversal.h"
 
-using namespace traversal;
+using traversal::traverse;
 
 
 TEST_CASE("empty") {

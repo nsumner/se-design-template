@@ -1,5 +1,5 @@
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/out/test")
 set(MEMCHECK "valgrind")
 
 add_library(doctest-main OBJECT
@@ -16,6 +16,10 @@ function(add_task_tests TASK_DIR TASK_NAME LIBRARIES)
         ${CMAKE_CURRENT_SOURCE_DIR}
     )
     target_link_libraries(${testcase} ${LIBRARIES})
+    set_target_properties(${testcase} PROPERTIES
+      LINKER_LANGUAGE CXX
+      CXX_STANDARD 20
+    )
 
     add_test(NAME "${testcase}"
       COMMAND ${testcase}

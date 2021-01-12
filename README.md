@@ -19,7 +19,7 @@ Building with CMake
 
         make
 
-By default, this should produce binaries for several test cases inside `bin/test/`.
+By default, this should produce binaries for several test cases inside `out/test/`.
 
 Note, building with a tool like ninja can be done by adding `-G Ninja` to
 the cmake invocation and running ninja instead of make.
@@ -35,6 +35,6 @@ Note that this will not show you exactly which tests failed and why. You can
 see this by running individual test binaries from within your build
 directory, e.g.:
 
-        bin/test/evaluation
+        out/test/evaluation
 
 

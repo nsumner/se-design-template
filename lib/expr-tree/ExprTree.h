@@ -1,3 +1,5 @@
+// 1f3f0cf7a91b9d72bf734d3a2e74a655
+
 #pragma once
 
 #include <deque>
@@ -39,7 +41,7 @@ private:
 // We use an inheritance structure on expressions to support the fact that
 // an operation may contain subexpressions of arbitrary form. Note that this
 // interacts with the visitor. It becomes harder to control the return type
-// when relying on inheritance? Why? What are the possible solutions? Where
+// when relying on inheritance. Why? What are the possible solutions? Where
 // is the complexity pushed?
 //
 // Consider: This problem is frequently encountered and solved in different
@@ -52,25 +54,38 @@ public:
 };
 
 
-class Literal : public Expression {
+// A `Literal` expresses a value that is known ahead of type and represented
+// syntactically within an expression. It represents the value with which it
+// is initialized.
+//
+// In 3 * x + 1, 3 and 1 are literals.
+//
+class Literal final : public Expression {
 public:
-  Literal(int64_t value)
+  explicit Literal(int64_t value)
     : value{value}
       { }
 
-  virtual void accept(ExprVisitor& visitor) const { return visitor.visit(*this); }
+  void accept(ExprVisitor& visitor) const final { return visitor.visit(*this); }
 
   const int64_t value;
 };
 
 
-class Symbol : public Expression {
+// A `Symbol` represents a named value that is not known ahead of time within
+// an expression. A binding between a Symbol and the value it represents may
+// be provided in an Environment. By looking up the symbol in the environment,
+// you can determine what value it should have.
+//
+// In 3 * x + 1, x in a symbol.
+//
+class Symbol final : public Expression {
 public:
-  Symbol(std::string name)
-    : name{name}
+  explicit Symbol(std::string name)
+    : name{std::move(name)}
       { }
 
-  virtual void accept(ExprVisitor& visitor) const { return visitor.visit(*this); }
+  void accept(ExprVisitor& visitor) const final { return visitor.visit(*this); }
 
   const std::string name;
 };
@@ -84,7 +99,9 @@ enum OpCode : uint8_t {
 };
 
 
-class Operation : public Expression {
+// An `Operation` performs some action on two values. Thus, an operation is
+// an internal node of the expression tree.
+class Operation final : public Expression {
 public:
   Operation(OpCode opCode, const Expression& lhs, const Expression& rhs)
     : opCode{opCode},
@@ -92,7 +109,7 @@ public:
       rhs{rhs}
       { }
 
-  virtual void accept(ExprVisitor& visitor) const { return visitor.visit(*this); }
+  void accept(ExprVisitor& visitor) const final { return visitor.visit(*this); }
 
   const OpCode opCode;
   const Expression& lhs;
@@ -119,26 +136,26 @@ public:
   // The builder methods are unsafe in a few ways. Can you think about how
   // you would fix them to be safer?
 
-  const Operation&
+  [[nodiscard]] const Operation&
   addOperation(OpCode opcode, const Expression& lhs, const Expression& rhs) {
     operations.emplace_back(opcode, lhs, rhs);
     return operations.back();
   }
 
-  const Literal&
+  [[nodiscard]] const Literal&
   addLiteral(int64_t value) {
     literals.emplace_back(value);
     return literals.back();
   }
 
-  const Symbol&
+  [[nodiscard]] const Symbol&
   addSymbol(std::string name) {
     symbols.emplace_back(std::move(name));
     return symbols.back();
   }
 
   void
-  setRoot(Expression& expr) {
+  setRoot(const Expression& expr) {
     root = &expr;
   }
 
@@ -153,11 +170,11 @@ private:
 struct Environment {
 public:
   void
-  set(std::string key, int64_t value) {
+  set(const std::string& key, int64_t value) {
     assignments[key] = value;
   }
 
-  std::optional<int64_t>
+  [[nodiscard]] std::optional<int64_t>
   get(const std::string& key) const {
     auto found = assignments.find(key);
     if (found != assignments.end()) {

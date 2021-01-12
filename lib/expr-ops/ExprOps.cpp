@@ -1,3 +1,4 @@
+// 1f3f0cf7a91b9d72bf734d3a2e74a655
 
 #include "ExprTree.h"
 #include "ExprOps.h"
@@ -5,7 +6,13 @@
 
 // You will want to implement these functions within this file.
 
-using namespace exprtree;
+using exprtree::Environment;
+using exprtree::ExprVisitor;
+using exprtree::Expression;
+using exprtree::Literal;
+using exprtree::Operation;
+using exprtree::OpCode;
+using exprtree::Symbol;
 
 namespace exprtree {
 

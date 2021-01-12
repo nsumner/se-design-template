@@ -7,9 +7,12 @@
 
 #include "Traversal.h"
 
-using namespace traversal;
-using namespace exprtree;
+using traversal::traverse;
 
+using exprtree::ExprTree;
+using exprtree::Expression;
+using exprtree::Environment;
+using exprtree::OpCode;
 
 using NodeType = const Expression*;
 using NodeList = std::vector<NodeType>;
