@@ -9,6 +9,22 @@ using exprtree::Environment;
 using exprtree::OpCode;
 
 
+namespace doctest {
+
+template <typename T>
+struct StringMaker<std::optional<T>> {
+  static String convert(const std::optional<T>& maybe) {
+    if (!maybe) {
+      return "EMPTY";
+    } else {
+      return std::to_string(*maybe).c_str();
+    }
+  }
+};
+
+}
+
+
 TEST_CASE("empty") {
   Environment env;
   ExprTree tree;

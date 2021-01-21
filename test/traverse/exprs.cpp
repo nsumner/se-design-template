@@ -3,6 +3,7 @@
 
 #include <list>
 #include <iostream>
+#include <sstream>
 #include <variant>
 
 #include "Traversal.h"
@@ -17,6 +18,42 @@ using exprtree::OpCode;
 using NodeType = const Expression*;
 using NodeList = std::vector<NodeType>;
 using EdgeList = std::vector<std::pair<NodeType,NodeType>>;
+
+
+namespace doctest {
+
+template <typename T, template <typename...> typename C>
+struct StringMaker<C<std::pair<T,T>>> {
+  static String convert(const C<std::pair<T,T>>& edges) {
+    std::ostringstream os;
+    const char* delimiter = "";
+    os << "[";
+    for (const auto& edge : edges) {
+      os << delimiter << "(" << edge.first << "," << edge.second << ") ";
+      delimiter = ", ";
+    }
+    os << "]";
+    return os.str().c_str();
+  }
+};
+
+template <typename T, template<typename...> typename C>
+struct StringMaker<C<T>> {
+  static String convert(const C<T>& nodes) {
+    std::ostringstream os;
+    const char* delimiter = "";
+    os << "[";
+    for (const auto& node : nodes) {
+      os << delimiter << ' ' << node << ' ';
+      delimiter = ", ";
+    }
+    os << "]";
+    return os.str().c_str();
+  }
+};
+
+}
+
 
 static std::pair<NodeList,EdgeList>
 recordTraversal(ExprTree& tree) {
