@@ -1,6 +1,8 @@
 
-add_library(traversal
-  empty.cpp
+add_library(traversal)
+target_sources(traversal
+  PRIVATE
+    empty.cpp
 )
 
 target_include_directories(traversal
@@ -9,11 +11,12 @@ target_include_directories(traversal
 )
 
 target_link_libraries(traversal
-  expr-tree
+  PUBLIC
+    expr-tree
 )
 
+target_compile_features(traversal PUBLIC cxx_std_20)
 set_target_properties(traversal PROPERTIES
   LINKER_LANGUAGE CXX
-  CXX_STANDARD 20
 )
 

@@ -32,9 +32,9 @@ public:
   void visit(const Operation& operation) { visitImpl(operation); }
 
 private:
-  virtual void visitImpl(const Literal& literal) { }
-  virtual void visitImpl(const Symbol& symbol) { }
-  virtual void visitImpl(const Operation& operation) { }
+  virtual void visitImpl(const Literal& /*literal*/) { }
+  virtual void visitImpl(const Symbol& /*symbol*/) { }
+  virtual void visitImpl(const Operation& /*operation*/) { }
 };
 
 
