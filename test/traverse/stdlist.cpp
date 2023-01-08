@@ -61,7 +61,7 @@ TEST_CASE("empty") {
   traverse(numbers, onNode, onEdge);
 
   CHECK(numbers == foundNodes);
-  CHECK(edges.empty());
+  CHECK(foundEdges.empty());
 }
 
 
@@ -81,7 +81,7 @@ TEST_CASE("one node") {
   traverse(numbers, onNode, onEdge);
 
   CHECK(numbers == foundNodes);
-  CHECK(edges.empty());
+  CHECK(foundEdges.empty());
 }
 
 
