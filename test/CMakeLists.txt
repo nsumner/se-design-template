@@ -5,6 +5,7 @@ set(MEMCHECK "valgrind")
 add_library(doctest-main OBJECT
   "doctest.cpp"
 )
+target_compile_features(doctest-main PUBLIC cxx_std_20)
 
 function(add_task_tests TASK_DIR TASK_NAME LIBRARIES)
   file(GLOB files "${TASK_DIR}/*.cpp")
